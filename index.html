@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Калькулятор сложного процента</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light py-5">
+
+<div class="container">
+  <h2 class="text-center mb-4">📈 Калькулятор сложного процента</h2>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-6 col-lg-3">
+      <label class="form-label">Начальная сумма</label>
+      <input type="number" class="form-control" id="initial" value="1000">
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <label class="form-label">Процент в неделю (%)</label>
+      <input type="number" class="form-control" id="rate" value="2">
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <label class="form-label">Количество недель</label>
+      <input type="number" class="form-control" id="weeks" value="52">
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <label class="form-label">Еженедельное пополнение</label>
+      <input type="number" class="form-control" id="deposit" value="100">
+    </div>
+    <div class="col-12 text-center mt-3">
+      <button class="btn btn-primary px-5" onclick="calculate()">Рассчитать</button>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4 text-center">
+    <div class="col-md-6"><h5 id="finalAmount" class="text-success">Итого на конец периода: 0.00</h5></div>
+    <div class="col-md-6"><h5 id="futureEarnings" class="text-warning">Заработок в дальнейшем: 0.00 в неделю</h5></div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover text-center align-middle" id="resultTable">
+      <thead class="table-dark">
+        <tr>
+          <th>Неделя</th>
+          <th>Начальный баланс</th>
+          <th>Пополнение</th>
+          <th>Проценты</th>
+          <th>Конечный баланс</th>
+          <th>Итого прибыль</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function sanitizeInput(id) {
+  const input = document.getElementById(id);
+  let value = parseFloat(input.value);
+  if (isNaN(value) || value < 0) {
+    input.value = '0';
+    value = 0;
+  }
+  return value;
+}
+
+function calculate() {
+  const initial = sanitizeInput('initial');
+  const ratePercent = sanitizeInput('rate');
+  const weeks = Math.floor(sanitizeInput('weeks'));
+  const deposit = sanitizeInput('deposit');
+  const rate = ratePercent / 100;
+
+  let balance = initial;
+  let totalProfit = 0;
+  const tableBody = document.querySelector("#resultTable tbody");
+  tableBody.innerHTML = '';
+
+  if (weeks <= 0 || (initial === 0 && deposit === 0)) {
+    document.getElementById("finalAmount").textContent = `Итого на конец периода: 0.00`;
+    document.getElementById("futureEarnings").textContent = `Заработок в дальнейшем: 0.00 в неделю`;
+    return;
+  }
+
+  for (let week = 1; week <= weeks; week++) {
+    const interest = balance * rate;
+    const newBalance = balance + interest + deposit;
+    totalProfit += interest;
+
+    tableBody.innerHTML += `
+      <tr>
+        <td>${week}</td>
+        <td>${balance.toFixed(2)}</td>
+        <td>${deposit.toFixed(2)}</td>
+        <td>${interest.toFixed(2)}</td>
+        <td>${newBalance.toFixed(2)}</td>
+        <td>${totalProfit.toFixed(2)}</td>
+      </tr>
+    `;
+
+    balance = newBalance;
+  }
+
+  document.getElementById("finalAmount").textContent = `Итого на конец периода: ${balance.toFixed(2)}`;
+  const futureProfit = balance * rate;
+  document.getElementById("futureEarnings").textContent = `Заработок в дальнейшем: ${futureProfit.toFixed(2)} в неделю`;
+}
+
+window.onload = calculate;
+</script>
+
+</body>
+</html>
