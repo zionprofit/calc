@@ -5,111 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Калькулятор сложного процента</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    body {
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .dark-mode {
-      background-color: #121212;
-      color: #e0e0e0;
-    }
-
-    .dark-mode .form-control,
-    .dark-mode .table {
-      background-color: #1e1e1e;
-      color: #ffffff;
-      border-color: #444;
-    }
-
-    .dark-mode .table-striped tbody tr:nth-of-type(odd) {
-      background-color: #222;
-    }
-
-    .table td,
-    .table th {
-      vertical-align: middle;
-    }
-
-    .btn-primary {
-      background-color: #2c3e50;
-      border-color: #2c3e50;
-    }
-
-    .btn-primary:hover {
-      background-color: #1a252f;
-      border-color: #1a252f;
-    }
-
-    .form-check.form-switch .form-check-input {
-      width: 2.5rem;
-      height: 1.3rem;
-      margin-left: 0.5rem;
-      margin-right: 0.5rem;
-    }
-
-    .switch-label {
-      font-weight: 500;
-      font-size: 14px;
-      white-space: nowrap;
-      line-height: 1;
-    }
-
-    h6 {
-      font-weight: 500;
-      font-size: 16px;
-    }
-
-    @media (max-width: 576px) {
-      .table th,
-      .table td {
-        font-size: 12px;
-        padding: 4px;
-      }
-
-      h6 {
-        font-size: 14px;
-      }
-
-      .table thead tr th {
-        font-size: 0;
-        position: relative;
-      }
-
-      .table thead tr th:nth-child(1)::after { content: "Нед."; }
-      .table thead tr th:nth-child(2)::after { content: "Старт"; }
-      .table thead tr th:nth-child(3)::after { content: "Поп."; }
-      .table thead tr th:nth-child(4)::after { content: "%"; }
-      .table thead tr th:nth-child(5)::after { content: "Конец"; }
-      .table thead tr th:nth-child(6)::after { content: "Приб."; }
-
-      body.en .table thead tr th:nth-child(1)::after { content: "Wk"; }
-      body.en .table thead tr th:nth-child(2)::after { content: "Start"; }
-      body.en .table thead tr th:nth-child(3)::after { content: "Dep"; }
-      body.en .table thead tr th:nth-child(4)::after { content: "%"; }
-      body.en .table thead tr th:nth-child(5)::after { content: "End"; }
-      body.en .table thead tr th:nth-child(6)::after { content: "Profit"; }
-
-      .table thead tr th::after {
-        font-size: 12px;
-        display: block;
-        text-align: center;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body class="py-5">
 
 <div class="container">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 id="title">Калькулятор сложного процента</h2>
-    <div class="d-flex gap-3 align-items-center">
+    <div class="settings-block d-flex gap-3 align-items-center flex-wrap justify-content-end">
       <div class="form-check form-switch d-flex align-items-center">
         <span class="switch-label">RU</span>
         <input class="form-check-input" type="checkbox" id="langToggle" onchange="toggleLanguage()" />
         <span class="switch-label">EN</span>
       </div>
-      <div class="form-check form-switch d-flex align-items-center">
+      <div class="form-check form-switch d-flex align-items-center theme-toggle">
         <span class="switch-label">☀️</span>
         <input class="form-check-input" type="checkbox" id="themeToggle" onchange="toggleTheme()" />
         <span class="switch-label">🌙</span>
@@ -168,122 +77,6 @@
   </div>
 </div>
 
-<script>
-  let currentLang = 'ru';
-
-  const texts = {
-    ru: {
-      title: "Калькулятор сложного процента",
-      labelInitial: "Начальная сумма",
-      labelRate: "Процент в неделю (%)",
-      labelWeeks: "Количество недель",
-      labelDeposit: "Еженедельное пополнение",
-      button: "Рассчитать",
-      finalAmount: "Итого на конец периода: ",
-      userInvestment: "Собственные инвестиции: ",
-      weeklyIncome: "Доход за неделю в конце периода: ",
-      tableHeaders: ["Неделя", "Начальный баланс", "Пополнение", "Проценты", "Конечный баланс", "Итого прибыль"]
-    },
-    en: {
-      title: "Compound Interest Calculator",
-      labelInitial: "Initial Amount",
-      labelRate: "Weekly Interest Rate (%)",
-      labelWeeks: "Number of Weeks",
-      labelDeposit: "Weekly Deposit",
-      button: "Calculate",
-      finalAmount: "Total at the end: ",
-      userInvestment: "Your investment: ",
-      weeklyIncome: "Weekly income at end of period: ",
-      tableHeaders: ["Week", "Start Balance", "Deposit", "Interest", "End Balance", "Total Profit"]
-    }
-  };
-
-  function updateLanguage(lang) {
-    const t = texts[lang];
-    document.getElementById('title').innerText = t.title;
-    document.getElementById('label-initial').innerText = t.labelInitial;
-    document.getElementById('label-rate').innerText = t.labelRate;
-    document.getElementById('label-weeks').innerText = t.labelWeeks;
-    document.getElementById('label-deposit').innerText = t.labelDeposit;
-    document.getElementById('calcBtn').innerText = t.button;
-
-    const headers = document.querySelector("#tableHeader tr").children;
-    t.tableHeaders.forEach((val, i) => {
-      headers[i].innerText = val;
-    });
-
-    document.body.classList.toggle("en", lang === 'en');
-
-    calculate();
-  }
-
-  function toggleLanguage() {
-    currentLang = document.getElementById('langToggle').checked ? 'en' : 'ru';
-    updateLanguage(currentLang);
-  }
-
-  function toggleTheme() {
-    document.body.classList.toggle("dark-mode");
-  }
-
-  function sanitizeInput(id) {
-    const input = document.getElementById(id);
-    let value = parseFloat(input.value);
-    if (isNaN(value)) {
-      input.value = '0';
-      value = 0;
-    }
-    return value;
-  }
-
-  function calculate() {
-    const t = texts[currentLang];
-    const initial = sanitizeInput('initial');
-    const ratePercent = sanitizeInput('rate');
-    const weeks = Math.floor(sanitizeInput('weeks'));
-    const deposit = sanitizeInput('deposit');
-    const rate = ratePercent / 100;
-
-    let balance = initial;
-    let totalProfit = 0;
-    const tableBody = document.querySelector("#resultTable tbody");
-    tableBody.innerHTML = '';
-
-    if (weeks <= 0) {
-      document.getElementById("userInvestment").innerText = `${t.userInvestment}0.00`;
-      document.getElementById("finalAmount").innerText = `${t.finalAmount}0.00`;
-      document.getElementById("futureEarnings").innerText = `${t.weeklyIncome}0.00`;
-      return;
-    }
-
-    for (let week = 1; week <= weeks; week++) {
-      const interest = balance * rate;
-      const newBalance = balance + interest + deposit;
-      totalProfit += interest;
-
-      tableBody.innerHTML += `
-        <tr>
-          <td>${week}</td>
-          <td>${balance.toFixed(2)}</td>
-          <td>${deposit.toFixed(2)}</td>
-          <td>${interest.toFixed(2)}</td>
-          <td>${newBalance.toFixed(2)}</td>
-          <td>${totalProfit.toFixed(2)}</td>
-        </tr>
-      `;
-      balance = newBalance;
-    }
-
-    const totalInvested = initial + deposit * weeks;
-
-    document.getElementById("userInvestment").innerText = `${t.userInvestment}${totalInvested.toFixed(2)}`;
-    document.getElementById("finalAmount").innerText = `${t.finalAmount}${balance.toFixed(2)}`;
-    document.getElementById("futureEarnings").innerText = `${t.weeklyIncome}${(balance * rate).toFixed(2)}`;
-  }
-
-  window.onload = () => {
-    updateLanguage('ru');
-  };
-</script>
+<script src="script.js"></script>
 </body>
 </html>
