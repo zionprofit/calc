@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Калькулятор сложного процента</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
       transition: background-color 0.3s, color 0.3s;
@@ -26,7 +26,8 @@
       background-color: #222;
     }
 
-    .table td, .table th {
+    .table td,
+    .table th {
       vertical-align: middle;
     }
 
@@ -53,186 +54,197 @@
       white-space: nowrap;
       line-height: 1;
     }
+
+    h6 {
+      font-weight: 500;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body class="py-5">
 
-<div class="container">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 id="title">Калькулятор сложного процента</h2>
-    <div class="d-flex gap-3 align-items-center">
-      <!-- Язык -->
-      <div class="form-check form-switch d-flex align-items-center">
-        <span class="switch-label">RU</span>
-        <input class="form-check-input" type="checkbox" id="langToggle" onchange="toggleLanguage()">
-        <span class="switch-label">EN</span>
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 id="title">Калькулятор сложного процента</h2>
+      <div class="d-flex gap-3 align-items-center">
+        <!-- Язык -->
+        <div class="form-check form-switch d-flex align-items-center">
+          <span class="switch-label">RU</span>
+          <input class="form-check-input" type="checkbox" id="langToggle" onchange="toggleLanguage()" />
+          <span class="switch-label">EN</span>
+        </div>
+        <!-- Тема -->
+        <div class="form-check form-switch d-flex align-items-center">
+          <span class="switch-label">☀️</span>
+          <input class="form-check-input" type="checkbox" id="themeToggle" onchange="toggleTheme()" />
+          <span class="switch-label">🌙</span>
+        </div>
       </div>
-      <!-- Тема -->
-      <div class="form-check form-switch d-flex align-items-center">
-        <span class="switch-label">☀️</span>
-        <input class="form-check-input" type="checkbox" id="themeToggle" onchange="toggleTheme()">
-        <span class="switch-label">🌙</span>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-6 col-lg-3">
+        <label class="form-label" id="label-initial">Начальная сумма</label>
+        <input type="number" class="form-control" id="initial" value="1000" />
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <label class="form-label" id="label-rate">Процент в неделю (%)</label>
+        <input type="number" class="form-control" id="rate" value="2" />
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <label class="form-label" id="label-weeks">Количество недель</label>
+        <input type="number" class="form-control" id="weeks" value="52" />
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <label class="form-label" id="label-deposit">Еженедельное пополнение</label>
+        <input type="number" class="form-control" id="deposit" value="100" />
+      </div>
+      <div class="col-12 text-center mt-3">
+        <button class="btn btn-primary px-5" id="calcBtn" onclick="calculate()">Рассчитать</button>
       </div>
     </div>
-  </div>
 
-  <div class="row g-3 mb-4">
-    <div class="col-md-6 col-lg-3">
-      <label class="form-label" id="label-initial">Начальная сумма</label>
-      <input type="number" class="form-control" id="initial" value="1000">
+    <div class="row g-3 mb-4 text-center">
+      <div class="col-md-4">
+        <h6 id="userInvestment">Собственные инвестиции: 0.00</h6>
+      </div>
+      <div class="col-md-4">
+        <h6 id="finalAmount">Итого на конец периода: 0.00</h6>
+      </div>
+      <div class="col-md-4">
+        <h6 id="futureEarnings">Доход за неделю в конце периода: 0.00</h6>
+      </div>
     </div>
-    <div class="col-md-6 col-lg-3">
-      <label class="form-label" id="label-rate">Процент в неделю (%)</label>
-      <input type="number" class="form-control" id="rate" value="2">
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <label class="form-label" id="label-weeks">Количество недель</label>
-      <input type="number" class="form-control" id="weeks" value="52">
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <label class="form-label" id="label-deposit">Еженедельное пополнение</label>
-      <input type="number" class="form-control" id="deposit" value="100">
-    </div>
-    <div class="col-12 text-center mt-3">
-      <button class="btn btn-primary px-5" id="calcBtn" onclick="calculate()">Рассчитать</button>
-    </div>
-  </div>
 
-  <div class="row g-3 mb-4 text-center">
-    <div class="col-md-6">
-      <h5 id="finalAmount">Итого на конец периода: 0.00</h5>
-    </div>
-    <div class="col-md-6">
-      <h5 id="futureEarnings">Заработок в дальнейшем: 0.00 в неделю</h5>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-hover text-center align-middle" id="resultTable">
+        <thead class="table-dark" id="tableHeader">
+          <tr>
+            <th>Неделя</th>
+            <th>Начальный баланс</th>
+            <th>Пополнение</th>
+            <th>Проценты</th>
+            <th>Конечный баланс</th>
+            <th>Итого прибыль</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
   </div>
 
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped table-hover text-center align-middle" id="resultTable">
-      <thead class="table-dark" id="tableHeader">
-        <tr>
-          <th>Неделя</th>
-          <th>Начальный баланс</th>
-          <th>Пополнение</th>
-          <th>Проценты</th>
-          <th>Конечный баланс</th>
-          <th>Итого прибыль</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-</div>
+  <script>
+    let currentLang = 'ru';
 
-<script>
-let currentLang = 'ru';
+    const texts = {
+      ru: {
+        title: "Калькулятор сложного процента",
+        labelInitial: "Начальная сумма",
+        labelRate: "Процент в неделю (%)",
+        labelWeeks: "Количество недель",
+        labelDeposit: "Еженедельное пополнение",
+        button: "Рассчитать",
+        finalAmount: "Итого на конец периода: ",
+        userInvestment: "Собственные инвестиции: ",
+        tableHeaders: ["Неделя", "Начальный баланс", "Пополнение", "Проценты", "Конечный баланс", "Итого прибыль"]
+      },
+      en: {
+        title: "Compound Interest Calculator",
+        labelInitial: "Initial Amount",
+        labelRate: "Weekly Interest Rate (%)",
+        labelWeeks: "Number of Weeks",
+        labelDeposit: "Weekly Deposit",
+        button: "Calculate",
+        finalAmount: "Total at the end: ",
+        userInvestment: "Your investment: ",
+        tableHeaders: ["Week", "Start Balance", "Deposit", "Interest", "End Balance", "Total Profit"]
+      }
+    };
 
-const texts = {
-  ru: {
-    title: "Калькулятор сложного процента",
-    labelInitial: "Начальная сумма",
-    labelRate: "Процент в неделю (%)",
-    labelWeeks: "Количество недель",
-    labelDeposit: "Еженедельное пополнение",
-    button: "Рассчитать",
-    finalAmount: "Итого на конец периода: ",
-    futureEarnings: "Заработок в дальнейшем: ",
-    tableHeaders: ["Неделя", "Начальный баланс", "Пополнение", "Проценты", "Конечный баланс", "Итого прибыль"]
-  },
-  en: {
-    title: "Compound Interest Calculator",
-    labelInitial: "Initial Amount",
-    labelRate: "Weekly Interest Rate (%)",
-    labelWeeks: "Number of Weeks",
-    labelDeposit: "Weekly Deposit",
-    button: "Calculate",
-    finalAmount: "Total at the end: ",
-    futureEarnings: "Future Weekly Earnings: ",
-    tableHeaders: ["Week", "Start Balance", "Deposit", "Interest", "End Balance", "Total Profit"]
-  }
-};
+    function updateLanguage(lang) {
+      const t = texts[lang];
+      document.getElementById('title').innerText = t.title;
+      document.getElementById('label-initial').innerText = t.labelInitial;
+      document.getElementById('label-rate').innerText = t.labelRate;
+      document.getElementById('label-weeks').innerText = t.labelWeeks;
+      document.getElementById('label-deposit').innerText = t.labelDeposit;
+      document.getElementById('calcBtn').innerText = t.button;
 
-function updateLanguage(lang) {
-  const t = texts[lang];
-  document.getElementById('title').innerText = t.title;
-  document.getElementById('label-initial').innerText = t.labelInitial;
-  document.getElementById('label-rate').innerText = t.labelRate;
-  document.getElementById('label-weeks').innerText = t.labelWeeks;
-  document.getElementById('label-deposit').innerText = t.labelDeposit;
-  document.getElementById('calcBtn').innerText = t.button;
+      const headers = document.querySelector("#tableHeader tr").children;
+      t.tableHeaders.forEach((val, i) => {
+        headers[i].innerText = val;
+      });
 
-  const headers = document.querySelector("#tableHeader tr").children;
-  t.tableHeaders.forEach((val, i) => {
-    headers[i].innerText = val;
-  });
+      calculate();
+    }
 
-  calculate();
-}
+    function toggleLanguage() {
+      currentLang = document.getElementById('langToggle').checked ? 'en' : 'ru';
+      updateLanguage(currentLang);
+    }
 
-function toggleLanguage() {
-  currentLang = document.getElementById('langToggle').checked ? 'en' : 'ru';
-  updateLanguage(currentLang);
-}
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
 
-function toggleTheme() {
-  document.body.classList.toggle("dark-mode");
-}
+    function sanitizeInput(id) {
+      const input = document.getElementById(id);
+      let value = parseFloat(input.value);
+      if (isNaN(value)) {
+        input.value = '0';
+        value = 0;
+      }
+      return value;
+    }
 
-function sanitizeInput(id) {
-  const input = document.getElementById(id);
-  let value = parseFloat(input.value);
-  if (isNaN(value)) {
-    input.value = '0';
-    value = 0;
-  }
-  return value;
-}
+    function calculate() {
+      const t = texts[currentLang];
+      const initial = sanitizeInput('initial');
+      const ratePercent = sanitizeInput('rate');
+      const weeks = Math.floor(sanitizeInput('weeks'));
+      const deposit = sanitizeInput('deposit');
+      const rate = ratePercent / 100;
 
-function calculate() {
-  const t = texts[currentLang];
-  const initial = sanitizeInput('initial');
-  const ratePercent = sanitizeInput('rate');
-  const weeks = Math.floor(sanitizeInput('weeks'));
-  const deposit = sanitizeInput('deposit');
-  const rate = ratePercent / 100;
+      let balance = initial;
+      let totalProfit = 0;
+      const tableBody = document.querySelector("#resultTable tbody");
+      tableBody.innerHTML = '';
 
-  let balance = initial;
-  let totalProfit = 0;
-  const tableBody = document.querySelector("#resultTable tbody");
-  tableBody.innerHTML = '';
+      if (weeks <= 0) {
+        document.getElementById("userInvestment").innerText = `${t.userInvestment}0.00`;
+        document.getElementById("finalAmount").innerText = `${t.finalAmount}0.00`;
+        document.getElementById("futureEarnings").innerText = `Доход за неделю в конце периода: 0.00`;
+        return;
+      }
 
-  if (weeks <= 0) {
-    document.getElementById("finalAmount").innerText = `${t.finalAmount}0.00`;
-    document.getElementById("futureEarnings").innerText = `${t.futureEarnings}0.00`;
-    return;
-  }
+      for (let week = 1; week <= weeks; week++) {
+        const interest = balance * rate;
+        const newBalance = balance + interest + deposit;
+        totalProfit += interest;
 
-  for (let week = 1; week <= weeks; week++) {
-    const interest = balance * rate;
-    const newBalance = balance + interest + deposit;
-    totalProfit += interest;
+        tableBody.innerHTML += `
+          <tr>
+            <td>${week}</td>
+            <td>${balance.toFixed(2)}</td>
+            <td>${deposit.toFixed(2)}</td>
+            <td>${interest.toFixed(2)}</td>
+            <td>${newBalance.toFixed(2)}</td>
+            <td>${totalProfit.toFixed(2)}</td>
+          </tr>
+        `;
+        balance = newBalance;
+      }
 
-    tableBody.innerHTML += `
-      <tr>
-        <td>${week}</td>
-        <td>${balance.toFixed(2)}</td>
-        <td>${deposit.toFixed(2)}</td>
-        <td>${interest.toFixed(2)}</td>
-        <td>${newBalance.toFixed(2)}</td>
-        <td>${totalProfit.toFixed(2)}</td>
-      </tr>
-    `;
-    balance = newBalance;
-  }
+      const totalInvested = initial + deposit * weeks;
 
-  document.getElementById("finalAmount").innerText = `${t.finalAmount}${balance.toFixed(2)}`;
-  document.getElementById("futureEarnings").innerText = `${t.futureEarnings}${(balance * rate).toFixed(2)}`;
-}
+      document.getElementById("userInvestment").innerText = `${t.userInvestment}${totalInvested.toFixed(2)}`;
+      document.getElementById("finalAmount").innerText = `${t.finalAmount}${balance.toFixed(2)}`;
+      document.getElementById("futureEarnings").innerText = `Доход за неделю в конце периода: ${(balance * rate).toFixed(2)}`;
+    }
 
-window.onload = () => {
-  updateLanguage('ru');
-};
-</script>
-
+    window.onload = () => {
+      updateLanguage('ru');
+    };
+  </script>
 </body>
 </html>
