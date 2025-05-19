@@ -75,25 +75,60 @@ h6 {
   .table thead tr th {
     font-size: 0;
     position: relative;
-  }
-
-  .table thead tr th:nth-child(1)::after { content: "Нед."; }
-  .table thead tr th:nth-child(2)::after { content: "Старт"; }
-  .table thead tr th:nth-child(3)::after { content: "Поп."; }
-  .table thead tr th:nth-child(4)::after { content: "%"; }
-  .table thead tr th:nth-child(5)::after { content: "Конец"; }
-  .table thead tr th:nth-child(6)::after { content: "Приб."; }
-
-  body.en .table thead tr th:nth-child(1)::after { content: "Wk"; }
-  body.en .table thead tr th:nth-child(2)::after { content: "Start"; }
-  body.en .table thead tr th:nth-child(3)::after { content: "Dep"; }
-  body.en .table thead tr th:nth-child(4)::after { content: "%"; }
-  body.en .table thead tr th:nth-child(5)::after { content: "End"; }
-  body.en .table thead tr th:nth-child(6)::after { content: "Profit"; }
-
-  .table thead tr th::after {
-    font-size: 12px;
-    display: block;
     text-align: center;
   }
+
+  .table thead tr th::before,
+  .table thead tr th::after {
+    display: block;
+    line-height: 1.1;
+  }
+
+  .table thead tr th::before {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .table thead tr th::after {
+    font-size: 10px;
+    color: #aaa;
+  }
+
+  /* RU — новый порядок столбцов */
+  .table thead tr th:nth-child(1)::before { content: "Неделя"; }
+  .table thead tr th:nth-child(1)::after  { content: "№ недели"; }
+
+  .table thead tr th:nth-child(2)::before { content: "Баланс"; }
+  .table thead tr th:nth-child(2)::after  { content: "в начале"; }
+
+  .table thead tr th:nth-child(3)::before { content: "Процент"; }
+  .table thead tr th:nth-child(3)::after  { content: "доход"; }
+
+  .table thead tr th:nth-child(4)::before { content: "Пополнение"; }
+  .table thead tr th:nth-child(4)::after  { content: "или снятие"; }
+
+  .table thead tr th:nth-child(5)::before { content: "Баланс"; }
+  .table thead tr th:nth-child(5)::after  { content: "в конце"; }
+
+  .table thead tr th:nth-child(6)::before { content: "Прибыль"; }
+  .table thead tr th:nth-child(6)::after  { content: "накоплено"; }
+
+  /* EN — column names */
+  body.en .table thead tr th:nth-child(1)::before { content: "Week"; }
+  body.en .table thead tr th:nth-child(1)::after  { content: "Number"; }
+
+  body.en .table thead tr th:nth-child(2)::before { content: "Balance"; }
+  body.en .table thead tr th:nth-child(2)::after  { content: "Start"; }
+
+  body.en .table thead tr th:nth-child(3)::before { content: "Interest"; }
+  body.en .table thead tr th:nth-child(3)::after  { content: "Earned"; }
+
+  body.en .table thead tr th:nth-child(4)::before { content: "Deposit"; }
+  body.en .table thead tr th:nth-child(4)::after  { content: "or withdrawal"; }
+
+  body.en .table thead tr th:nth-child(5)::before { content: "Balance"; }
+  body.en .table thead tr th:nth-child(5)::after  { content: "End"; }
+
+  body.en .table thead tr th:nth-child(6)::before { content: "Profit"; }
+  body.en .table thead tr th:nth-child(6)::after  { content: "Total"; }
 }

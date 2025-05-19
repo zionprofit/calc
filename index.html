@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="py-5">
-
 <div class="container">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 id="title">Калькулятор сложного процента</h2>
@@ -23,25 +22,36 @@
         <input class="form-check-input" type="checkbox" id="themeToggle" onchange="toggleTheme()" />
         <span class="switch-label">🌙</span>
       </div>
+      <div class="form-check form-switch d-flex align-items-center">
+        <span class="switch-label">₽</span>
+        <input class="form-check-input" type="checkbox" id="currencyToggle" onchange="toggleCurrency()" />
+        <span class="switch-label">$</span>
+      </div>
     </div>
   </div>
 
   <div class="row g-3 mb-4">
     <div class="col-md-6 col-lg-3">
       <label class="form-label" id="label-initial">Начальная сумма</label>
-      <input type="number" class="form-control" id="initial" value="1000" />
+      <div class="input-group">
+        <span class="input-group-text" id="currencyInitial">₽</span>
+        <input type="number" class="form-control" id="initial" value="1000" />
+      </div>
     </div>
     <div class="col-md-6 col-lg-3">
       <label class="form-label" id="label-rate">Процент в неделю (%)</label>
       <input type="number" class="form-control" id="rate" value="2" />
     </div>
     <div class="col-md-6 col-lg-3">
-      <label class="form-label" id="label-weeks">Количество недель</label>
+      <label class="form-label" id="label-weeks">Количество недель (1 год = 52 недели)</label>
       <input type="number" class="form-control" id="weeks" value="52" />
     </div>
     <div class="col-md-6 col-lg-3">
-      <label class="form-label" id="label-deposit">Еженедельное пополнение</label>
-      <input type="number" class="form-control" id="deposit" value="100" />
+      <label class="form-label" id="label-deposit">Еженедельное пополнение / снятие</label>
+      <div class="input-group">
+        <span class="input-group-text" id="currencyDeposit">₽</span>
+        <input type="number" class="form-control" id="deposit" value="100" />
+      </div>
     </div>
     <div class="col-12 text-center mt-3">
       <button class="btn btn-primary px-5" id="calcBtn" onclick="calculate()">Рассчитать</button>
@@ -49,15 +59,10 @@
   </div>
 
   <div class="row g-3 mb-4 text-center">
-    <div class="col-md-4">
-      <h6 id="userInvestment">Собственные инвестиции: 0.00</h6>
-    </div>
-    <div class="col-md-4">
-      <h6 id="finalAmount">Итого на конец периода: 0.00</h6>
-    </div>
-    <div class="col-md-4">
-      <h6 id="futureEarnings">Доход за неделю в конце периода: 0.00</h6>
-    </div>
+    <div class="col-md-3"><h6 id="userInvestment">Собственные инвестиции: 0.00</h6></div>
+    <div class="col-md-3"><h6 id="finalAmount">Итого на конец периода: 0.00</h6></div>
+    <div class="col-md-3"><h6 id="totalProfit">Итого прибыль за период: 0.00</h6></div>
+    <div class="col-md-3"><h6 id="futureEarnings">Доход за неделю в конце периода: 0.00</h6></div>
   </div>
 
   <div class="table-responsive">
@@ -66,8 +71,8 @@
         <tr>
           <th>Неделя</th>
           <th>Начальный баланс</th>
-          <th>Пополнение</th>
           <th>Проценты</th>
+          <th>Пополнение</th>
           <th>Конечный баланс</th>
           <th>Итого прибыль</th>
         </tr>
@@ -76,7 +81,6 @@
     </table>
   </div>
 </div>
-
 <script src="script.js"></script>
 </body>
 </html>
