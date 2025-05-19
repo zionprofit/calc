@@ -52,6 +52,74 @@ h6 {
   font-size: 16px;
 }
 
+/* Desktop results */
+.result-card {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.result-card .result-block {
+  flex: 1;
+  padding: 1rem;
+  text-align: center;
+  border-right: 1px solid #ccc;
+  background: #fff;
+}
+
+.result-card .result-block:last-child {
+  border-right: none;
+}
+
+.result-card h6 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.result-card strong {
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.dark-mode .result-card {
+  background: #1e1e1e;
+  border-color: #444;
+}
+
+.dark-mode .result-block {
+  background: #2a2a2a;
+  color: #fff;
+  border-color: #444;
+}
+
+@media (max-width: 576px) {
+  .desktop-result {
+    display: none !important;
+  }
+
+  .dark-mode .result-card.card td,
+  .dark-mode .result-card.card th {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border-color: #444;
+  }
+}
+
+@media (min-width: 577px) {
+  .mobile-result {
+    display: none !important;
+  }
+
+  .result-card {
+    display: flex;
+    gap: 1px;
+  }
+}
+
 @media (max-width: 576px) {
   .table th,
   .table td {
@@ -59,145 +127,48 @@ h6 {
     padding: 4px;
   }
 
-  h6 {
-    font-size: 14px;
-  }
-
-  .settings-block {
-    flex-direction: column;
-    align-items: flex-end;
-  }
-
-  .theme-toggle {
-    margin-top: 8px;
-  }
-
   .table thead tr th {
     font-size: 0;
     position: relative;
-    text-align: center;
-  }
-
-  .table thead tr th::before,
-  .table thead tr th::after {
-    display: block;
-    line-height: 1.1;
   }
 
   .table thead tr th::before {
+    display: block;
     font-size: 12px;
     font-weight: bold;
+    line-height: 1.1;
   }
 
   .table thead tr th::after {
+    display: block;
     font-size: 10px;
-    color: #aaa;
+    color: #888;
+    line-height: 1;
   }
 
   .table thead tr th:nth-child(1)::before { content: "Неделя"; }
-  .table thead tr th:nth-child(1)::after  { content: "№ недели"; }
+  .table thead tr th:nth-child(1)::after  { content: "№"; }
   .table thead tr th:nth-child(2)::before { content: "Баланс"; }
   .table thead tr th:nth-child(2)::after  { content: "в начале"; }
-  .table thead tr th:nth-child(3)::before { content: "Процент"; }
+  .table thead tr th:nth-child(3)::before { content: "Проценты"; }
   .table thead tr th:nth-child(3)::after  { content: "доход"; }
   .table thead tr th:nth-child(4)::before { content: "Пополнение"; }
   .table thead tr th:nth-child(4)::after  { content: "или снятие"; }
   .table thead tr th:nth-child(5)::before { content: "Баланс"; }
   .table thead tr th:nth-child(5)::after  { content: "в конце"; }
   .table thead tr th:nth-child(6)::before { content: "Прибыль"; }
-  .table thead tr th:nth-child(6)::after  { content: "накоплено"; }
+  .table thead tr th:nth-child(6)::after  { content: "накопл."; }
 
   body.en .table thead tr th:nth-child(1)::before { content: "Week"; }
-  body.en .table thead tr th:nth-child(1)::after  { content: "Number"; }
+  body.en .table thead tr th:nth-child(1)::after  { content: "#"; }
   body.en .table thead tr th:nth-child(2)::before { content: "Balance"; }
   body.en .table thead tr th:nth-child(2)::after  { content: "Start"; }
   body.en .table thead tr th:nth-child(3)::before { content: "Interest"; }
   body.en .table thead tr th:nth-child(3)::after  { content: "Earned"; }
   body.en .table thead tr th:nth-child(4)::before { content: "Deposit"; }
-  body.en .table thead tr th:nth-child(4)::after  { content: "or withdrawal"; }
+  body.en .table thead tr th:nth-child(4)::after  { content: "or W/D"; }
   body.en .table thead tr th:nth-child(5)::before { content: "Balance"; }
   body.en .table thead tr th:nth-child(5)::after  { content: "End"; }
   body.en .table thead tr th:nth-child(6)::before { content: "Profit"; }
   body.en .table thead tr th:nth-child(6)::after  { content: "Total"; }
-}
-
-/* Итоговая таблица в карточке */
-.result-card {
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.dark-mode .result-card {
-  background-color: #1e1e1e;
-  border-color: #444;
-}
-
-.result-card th {
-  text-align: right;
-  font-weight: 500;
-  width: 60%;
-}
-
-.result-card td {
-  font-weight: bold;
-  width: 40%;
-}
-
-.dark-mode .result-card th {
-  color: #ccc;
-}
-
-.dark-mode .result-card td {
-  color: #fff;
-}
-
-/* Стиль блока итогов для desktop */
-@media (min-width: 577px) {
-  .result-card {
-    display: flex;
-    justify-content: space-between;
-    gap: 1px;
-    background: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  }
-
-  .result-card .result-block {
-    flex: 1;
-    padding: 1rem;
-    text-align: center;
-    border-right: 1px solid #ccc;
-    background-color: #ffffff;
-  }
-
-  .result-card .result-block:last-child {
-    border-right: none;
-  }
-
-  .result-card h6 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 500;
-  }
-
-  .result-card strong {
-    display: block;
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 4px;
-  }
-
-  .dark-mode .result-card {
-    background: #1e1e1e;
-    border-color: #444;
-  }
-
-  .dark-mode .result-card .result-block {
-    background: #2a2a2a;
-    border-color: #444;
-    color: #fff;
-  }
 }

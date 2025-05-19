@@ -79,14 +79,14 @@ function formatNumber(num) {
     .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
-// Обновить и ID, и все классы с этим названием
 function setValue(idOrClass, value) {
   const elById = document.getElementById(idOrClass);
   if (elById) elById.innerText = value;
 
-  document.querySelectorAll(`.${idOrClass}`).forEach(el => {
+  const elByClass = document.getElementsByClassName(idOrClass);
+  for (let el of elByClass) {
     el.innerText = value;
-  });
+  }
 }
 
 function calculate() {
