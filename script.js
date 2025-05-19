@@ -9,10 +9,6 @@ const texts = {
     labelWeeks: "Количество недель (1 год = 52 недели)",
     labelDeposit: "Еженедельное пополнение / снятие",
     button: "Рассчитать",
-    finalAmount: "Итого на конец периода: ",
-    userInvestment: "Собственные инвестиции: ",
-    totalProfit: "Итого прибыль за период: ",
-    weeklyIncome: "Доход за неделю в конце периода: ",
     tableHeaders: ["Неделя", "Начальный баланс", "Проценты", "Пополнение", "Конечный баланс", "Итого прибыль"]
   },
   en: {
@@ -22,10 +18,6 @@ const texts = {
     labelWeeks: "Number of Weeks (1 year = 52)",
     labelDeposit: "Weekly Deposit / Withdrawal",
     button: "Calculate",
-    finalAmount: "Total at the end: ",
-    userInvestment: "Your investment: ",
-    totalProfit: "Total profit over period: ",
-    weeklyIncome: "Weekly income at end of period: ",
     tableHeaders: ["Week", "Start Balance", "Interest", "Deposit", "End Balance", "Total Profit"]
   }
 };
@@ -64,9 +56,9 @@ function toggleCurrency() {
   currencySymbol = isDollar ? '$' : '₽';
   localStorage.setItem('currency', currencySymbol);
 
-  // Обновляем отображение символов в input'ах
   document.getElementById('currencyInitial').innerText = currencySymbol;
   document.getElementById('currencyDeposit').innerText = currencySymbol;
+
   calculate();
 }
 
@@ -81,8 +73,23 @@ function sanitizeInput(id) {
   return value;
 }
 
+function formatNumber(num) {
+  return num.toFixed(2)
+    .replace('.', ',')
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+// Обновить и ID, и все классы с этим названием
+function setValue(idOrClass, value) {
+  const elById = document.getElementById(idOrClass);
+  if (elById) elById.innerText = value;
+
+  document.querySelectorAll(`.${idOrClass}`).forEach(el => {
+    el.innerText = value;
+  });
+}
+
 function calculate() {
-  const t = texts[currentLang];
   const initial = sanitizeInput('initial');
   const ratePercent = sanitizeInput('rate');
   const weeks = Math.floor(sanitizeInput('weeks'));
@@ -95,10 +102,10 @@ function calculate() {
   tableBody.innerHTML = '';
 
   if (weeks <= 0) {
-    document.getElementById("userInvestment").innerText = `${t.userInvestment}${currencySymbol}0.00`;
-    document.getElementById("finalAmount").innerText = `${t.finalAmount}${currencySymbol}0.00`;
-    document.getElementById("totalProfit").innerText = `${t.totalProfit}${currencySymbol}0.00`;
-    document.getElementById("futureEarnings").innerText = `${t.weeklyIncome}${currencySymbol}0.00`;
+    setValue("userInvestment", `${currencySymbol}0,00`);
+    setValue("finalAmount", `${currencySymbol}0,00`);
+    setValue("totalProfit", `${currencySymbol}0,00`);
+    setValue("futureEarnings", `${currencySymbol}0,00`);
     return;
   }
 
@@ -110,11 +117,11 @@ function calculate() {
     tableBody.innerHTML += `
       <tr>
         <td>${week}</td>
-        <td>${currencySymbol}${balance.toFixed(2)}</td>
-        <td>${currencySymbol}${interest.toFixed(2)}</td>
-        <td>${currencySymbol}${deposit.toFixed(2)}</td>
-        <td>${currencySymbol}${newBalance.toFixed(2)}</td>
-        <td>${currencySymbol}${totalProfit.toFixed(2)}</td>
+        <td>${currencySymbol}${formatNumber(balance)}</td>
+        <td>${currencySymbol}${formatNumber(interest)}</td>
+        <td>${currencySymbol}${formatNumber(deposit)}</td>
+        <td>${currencySymbol}${formatNumber(newBalance)}</td>
+        <td>${currencySymbol}${formatNumber(totalProfit)}</td>
       </tr>
     `;
     balance = newBalance;
@@ -123,10 +130,10 @@ function calculate() {
   const totalInvested = initial + deposit * weeks;
   const profit = balance - totalInvested;
 
-  document.getElementById("userInvestment").innerText = `${t.userInvestment}${currencySymbol}${totalInvested.toFixed(2)}`;
-  document.getElementById("finalAmount").innerText = `${t.finalAmount}${currencySymbol}${balance.toFixed(2)}`;
-  document.getElementById("totalProfit").innerText = `${t.totalProfit}${currencySymbol}${profit.toFixed(2)}`;
-  document.getElementById("futureEarnings").innerText = `${t.weeklyIncome}${currencySymbol}${(balance * rate).toFixed(2)}`;
+  setValue("userInvestment", `${currencySymbol}${formatNumber(totalInvested)}`);
+  setValue("finalAmount", `${currencySymbol}${formatNumber(balance)}`);
+  setValue("totalProfit", `${currencySymbol}${formatNumber(profit)}`);
+  setValue("futureEarnings", `${currencySymbol}${formatNumber(balance * rate)}`);
 }
 
 window.onload = () => {
@@ -150,6 +157,9 @@ window.onload = () => {
   const savedCurrency = localStorage.getItem('currency') || '₽';
   currencySymbol = savedCurrency;
   document.getElementById('currencyToggle').checked = savedCurrency === '$';
+
+  document.getElementById('currencyInitial').innerText = currencySymbol;
+  document.getElementById('currencyDeposit').innerText = currencySymbol;
 
   updateLanguage(savedLang);
 };

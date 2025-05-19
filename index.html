@@ -58,12 +58,43 @@
     </div>
   </div>
 
-  <div class="row g-3 mb-4 text-center">
-    <div class="col-md-3"><h6 id="userInvestment">Собственные инвестиции: 0.00</h6></div>
-    <div class="col-md-3"><h6 id="finalAmount">Итого на конец периода: 0.00</h6></div>
-    <div class="col-md-3"><h6 id="totalProfit">Итого прибыль за период: 0.00</h6></div>
-    <div class="col-md-3"><h6 id="futureEarnings">Доход за неделю в конце периода: 0.00</h6></div>
+  <!-- Блок итогов -->
+<div class="mb-4">
+  <!-- Desktop версия -->
+  <div class="result-card d-none d-sm-flex">
+    <div class="result-block">
+      <h6>Итого на конец периода:</h6>
+      <strong id="finalAmount">0,00</strong>
+    </div>
+    <div class="result-block">
+      <h6>Доход за неделю в конце периода:</h6>
+      <strong id="futureEarnings">0,00</strong>
+    </div>
+    <div class="result-block">
+      <h6>Собственные инвестиции:</h6>
+      <strong id="userInvestment">0,00</strong>
+    </div>
+    <div class="result-block">
+      <h6>Итого прибыль за период:</h6>
+      <strong id="totalProfit">0,00</strong>
+    </div>
   </div>
+
+  <!-- Mobile версия -->
+  <div class="card result-card d-sm-none">
+    <div class="card-body">
+      <table class="table mb-0 text-center">
+        <tbody>
+          <tr><th>Итого на конец периода:</th><td class="finalAmount">0,00</td></tr>
+          <tr><th>Доход за неделю в конце периода:</th><td class="futureEarnings">0,00</td></tr>
+          <tr><th>Собственные инвестиции:</th><td class="userInvestment">0,00</td></tr>
+          <tr><th>Итого прибыль за период:</th><td class="totalProfit">0,00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 
   <div class="table-responsive">
     <table class="table table-bordered table-striped table-hover text-center align-middle" id="resultTable">
